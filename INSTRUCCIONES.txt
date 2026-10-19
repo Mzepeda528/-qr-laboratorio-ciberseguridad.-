@@ -1,0 +1,58 @@
+LABORATORIO DE CIBERSEGURIDAD: QR + REGISTRO CONSENTIDO
+======================================================
+
+QUÉ INCLUYE
+- Servidor web Python (Flask).
+- QR generado automáticamente que abre la demostración.
+- Simulación de pantalla de bloqueo (no bloquea el dispositivo real).
+- Base SQLite local: registros.db, se crea al iniciar.
+- Panel de administración con fecha, identificador aleatorio y user-agent.
+- Consentimiento visible antes de guardar cada participación.
+
+REQUISITOS
+- Python 3.10 o posterior.
+- Internet solo para instalar las dependencias la primera vez.
+- Para probar desde un teléfono, computadora y teléfono deben estar en la misma Wi-Fi.
+
+WINDOWS: INSTALACIÓN
+1. Extraé el ZIP en una carpeta.
+2. Abrí CMD o PowerShell dentro de esa carpeta.
+3. Creá un entorno virtual (recomendado):
+   py -m venv .venv
+   .venv\Scripts\activate
+4. Instalá dependencias:
+   py -m pip install -r requirements.txt
+5. (Opcional pero recomendado) configurá una clave de administración:
+   PowerShell:
+   $env:DEMO_ADMIN_KEY="una-clave-larga-que-solo-vos-sepas"
+   CMD:
+   set DEMO_ADMIN_KEY=una-clave-larga-que-solo-vos-sepas
+6. Ejecutá:
+   py app.py
+7. Abrí en la computadora la dirección que aparece como "En esta computadora".
+8. En el teléfono conectado a la misma Wi-Fi, abrí la dirección que aparece como "Desde otro dispositivo".
+9. Para ver el QR, abrí la dirección que termina en /qr.png desde la computadora y guardá la imagen.
+   También podés imprimirla o mostrarla en la exposición.
+10. El panel de administración aparece en la consola al iniciar. Usá esa dirección para ver registros.
+
+SI EL TELÉFONO NO ABRE LA PÁGINA
+- Confirmá que ambos equipos estén en la misma Wi-Fi.
+- Windows puede mostrar un aviso de Firewall: permití Python en redes privadas solo si es tu red de confianza.
+- Revisá que la IP local detectada sea la de tu Wi-Fi. Si no, definí DEMO_BASE_URL antes de ejecutar:
+  PowerShell: $env:DEMO_BASE_URL="http://192.168.1.25:5000"
+  CMD: set DEMO_BASE_URL=http://192.168.1.25:5000
+  Reemplazá 192.168.1.25 por la IPv4 de tu computadora (ipconfig).
+- Reiniciá app.py después de cambiar la variable.
+
+DATOS Y PRIVACIDAD
+- Se registra únicamente al pulsar Participar y aceptar el consentimiento.
+- Se guarda fecha/hora, identificador aleatorio de sesión, user-agent y evento.
+- No se registra IP, IMEI, número telefónico, GPS, contraseñas ni contactos.
+- El user-agent no identifica de forma única un teléfono; no afirmés que podés reconocer con certeza a cada dispositivo.
+- La base registros.db queda en esta carpeta. Borrá ese archivo para eliminar los registros de la demostración.
+- El panel admin usa una clave; cambiá la clave predeterminada antes de usarlo en una red compartida.
+- No expongás este servidor a Internet ni lo uses para recopilar datos sin informar y obtener consentimiento.
+
+IMPORTANTE
+Este proyecto es una simulación educativa. No bloquea teléfonos, no evita cerrar el navegador,
+no instala aplicaciones, no abusa de permisos y no intenta evadir la seguridad del dispositivo.

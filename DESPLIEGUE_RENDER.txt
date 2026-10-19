@@ -1,0 +1,58 @@
+CÓMO PUBLICAR TU LABORATORIO QR EN INTERNET (gratis, con Render.com)
+=====================================================================
+
+Con esto, cualquiera podrá escanear el QR usando SUS PROPIOS DATOS MÓVILES,
+sin necesidad de conectarse a tu wifi.
+
+PASO 1 — Sube el proyecto a GitHub
+-----------------------------------
+1. Crea una cuenta gratis en https://github.com si no tienes.
+2. Crea un repositorio nuevo, por ejemplo "qr-laboratorio-ciberseguridad".
+3. Sube ahí TODOS los archivos de esta carpeta (app.py, requirements.txt,
+   Procfile, INSTRUCCIONES.txt). Puedes arrastrarlos directo en la web de
+   GitHub con el botón "Add file > Upload files", no necesitas usar la
+   terminal si no quieres.
+
+PASO 2 — Crea el servicio en Render
+-------------------------------------
+1. Ve a https://render.com y crea una cuenta gratis (puedes entrar con
+   tu cuenta de GitHub, es más rápido).
+2. Click en "New +" → "Web Service".
+3. Conecta tu repositorio de GitHub (el que creaste en el paso 1).
+4. Render detecta que es Python. Configura:
+     - Name: el que quieras (ej. qr-lab-ciberseguridad)
+     - Region: la más cercana (Oregon o similar)
+     - Build Command:  pip install -r requirements.txt
+     - Start Command:  gunicorn app:app --bind 0.0.0.0:$PORT
+     - Instance Type:  Free
+5. En "Environment Variables" (variables de entorno), agrega:
+     - DEMO_ADMIN_KEY = (una clave secreta que tú inventes, para ver el
+       panel de administración). Ejemplo: miClaveSecreta2026
+6. Click en "Create Web Service" y espera unos minutos mientras despliega.
+
+PASO 3 — Usa tu app pública
+------------------------------
+1. Cuando termine, Render te da una URL tipo:
+      https://qr-lab-ciberseguridad.onrender.com
+2. Abre esa URL + "/qr.png" en tu navegador, por ejemplo:
+      https://qr-lab-ciberseguridad.onrender.com/qr.png
+   Ahí verás la imagen del código QR ya lista para proyectar en tu
+   exposición. Descárgala o proyéctala directo desde el navegador.
+3. Para ver quién participó (panel de administración):
+      https://qr-lab-ciberseguridad.onrender.com/admin?key=miClaveSecreta2026
+   (usa la misma clave que pusiste en DEMO_ADMIN_KEY)
+
+NOTAS IMPORTANTES
+-------------------
+- El plan gratis de Render "duerme" el servicio si nadie lo usa por un
+  rato, y tarda unos 30-50 segundos en "despertar" la primera vez que
+  alguien lo visita. Para tu exposición: abre tú mismo la URL unos
+  minutos ANTES de empezar, así ya está "despierta" cuando la gente
+  escanee el QR.
+- La base de datos (registros.db) en el plan gratis de Render NO es
+  permanente: si el servicio se reinicia, se borran los registros.
+  Para una demo de clase de un día esto no es problema, pero no sirve
+  para guardar datos a largo plazo.
+- Todo lo que se guarda (hora, sesión, user-agent) requiere que el
+  usuario marque la casilla de consentimiento antes de participar —
+  eso ya está en el código y es importante mantenerlo así.
